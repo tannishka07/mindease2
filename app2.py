@@ -1,10 +1,12 @@
 from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from datetime import datetime, date
 from bson import ObjectId
 import os
 import json
+from openai import OpenAI
+from mind_ease_chat import register_chat_routes
 from journal_api import create_journal_blueprint
 from music_recommender import create_music_blueprint
 
@@ -17,6 +19,10 @@ print("✅ Mongo connected")
 
 # Flask
 app = Flask(__name__)
+
+# OpenAI is initialized server-side; never expose this key in browser code.
+openai_client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY")) if os.environ.get("OPENAI_API_KEY") else None
+register_chat_routes(app, db, openai_client) if openai_client else None
 
 # 🔐 SESSION SECRET KEY
 app.config["SECRET_KEY"] = os.environ.get(
