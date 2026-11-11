@@ -201,5 +201,27 @@
 </div>
 
 <script src="{{ url_for('static', filename='wellness.js') }}"></script>
+
+<!-- MindEase AI chat widget -->
+<div id="mindease-chat" class="me-chat">
+  <button id="me-chat-toggle" class="me-chat-toggle" type="button" aria-label="Open MindEase AI chat">✦</button>
+  <section class="me-chat-panel" id="me-chat-panel" aria-label="MindEase AI assistant" hidden>
+    <header class="me-chat-header">
+      <div><strong>MindEase AI</strong><small>Your supportive study & wellbeing companion</small></div>
+      <button id="me-chat-close" type="button" aria-label="Close chat">×</button>
+    </header>
+    <div id="me-chat-messages" class="me-chat-messages" aria-live="polite">
+      <div class="me-chat-bubble assistant">Hi! 🌿 I'm here to listen and help you think through study stress, routines, or a difficult day. What's on your mind?</div>
+    </div>
+    <form id="me-chat-form" class="me-chat-form">
+      <textarea id="me-chat-input" rows="1" maxlength="2000" placeholder="Type your message..." aria-label="Your message" required></textarea>
+      <button id="me-chat-send" type="submit">Send</button>
+    </form>
+    <p class="me-chat-note">AI support, not professional care. Don't share passwords or private identifying details. In an emergency, contact local emergency services or a trusted person.</p>
+  </section>
+</div>
+<link rel="stylesheet" href="{{ url_for('static', filename='chatbot.css') }}">
+<script src="{{ url_for('static', filename='chatbot.js') }}" defer></script>
+
 </body>
 </html>
