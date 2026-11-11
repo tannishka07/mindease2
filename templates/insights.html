@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Insights | MINDEASE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='insights.css') }}">
+</head>
+<body>
+
+<div class="insights-page-container">
+    <div class="insights-card">
+        <h1 class="insights-title">Your Journey 📊</h1>
+        <p class="insights-subtitle">A summary of your wellness progress</p>
+
+        <div class="stats-row">
+
+    <div class="stat-item">
+        <span class="stat-number">{{ m_count }}</span>
+        <span class="stat-label">Moods Tracked</span>
+    </div>
+
+    <div class="stat-item">
+        <span class="stat-number">{{ j_count }}</span>
+        <span class="stat-label">Journals Written</span>
+    </div>
+
+    <div class="stat-item">
+
+        {% if most_mood == "happy" %}
+            <span class="stat-number">😊</span>
+            <span class="stat-label">Mostly Happy</span>
+
+        {% elif most_mood == "angry" %}
+            <span class="stat-number">😡</span>
+            <span class="stat-label">Mostly Angry</span>
+
+        {% elif most_mood == "sad" %}
+            <span class="stat-number">🥺</span>
+            <span class="stat-label">Mostly Sad</span>
+
+        {% elif most_mood == "stressed" %}
+            <span class="stat-number">😫</span>
+            <span class="stat-label">Mostly Stressed</span>
+
+        {% else %}
+            <span class="stat-number">📊</span>
+            <span class="stat-label">stats</span>
+        {% endif %}
+
+    </div>
+
+</div>
+    
+<div class="weekly-summary">
+
+    <h3>Most Frequent Mood This Week</h3>
+
+    <div class="summary-box">
+
+        {% if most_mood == "happy" %}
+            😊 Happy
+
+        {% elif most_mood == "angry" %}
+            😡 Angry
+
+        {% elif most_mood == "sad" %}
+            🥺 Sad
+
+        {% elif most_mood == "stressed" %}
+            😫 Stressed
+
+        {% else %}
+            No mood data yet
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+       <div class="history-section">
+    <h3>Recent Activity</h3>
+
+    <table class="insights-table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Reflection Snippet</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for entry in journals %}
+            <tr>
+                <td>{{ entry.date }}</td>
+                <td>{{ entry.text[:55] }}...</td>
+            </tr>
+
+            {% else %}
+            <tr>
+                <td colspan="2" class="empty-msg">
+                    No data found yet. Start your journey today!
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+
+<!-- ADD THIS BELOW -->
+
+<div class="weekly-moods">
+
+    <h3>📊 Weekly Mood Tracker</h3>
+
+    {% for mood in weekly_moods %}
+
+    <div class="mood-row">
+
+        <span>{{ mood.time }}</span>
+
+        <span class="mood-badge">
+
+            {% if mood.mood|lower == "happy" %}
+                😊 Happy
+
+            {% elif mood.mood|lower == "angry" %}
+                😡 Angry
+
+            {% elif mood.mood|lower == "sad" %}
+                🥺 Sad
+
+            {% elif mood.mood|lower == "stressed" %}
+                😫 Stressed
+
+            {% else %}
+                {{ mood.mood }}
+            {% endif %}
+
+        </span>
+
+    </div>
+
+    {% endfor %}
+
+
+
+</div>
+        <div class="back-footer">
+            <a href="/dashboard" class="back-link">← Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up | MINDEASE</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="auth-container">
+
+    <!-- LEFT ILLUSTRATION -->
+    <div class="auth-left">
+        <img
+            src="{{ url_for('static', filename='images/signup.png') }}"
+            alt="Signup illustration">
+        
+    </div>
+
+    <!-- RIGHT FORM -->
+    <div class="auth-right">
+        <h1>Create Account</h1>
+
+        <form method="post">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+
+            <button type="submit" class="auth-btn">
+                Sign Up
+            </button>
+        </form>
+
+        <p class="auth-text">
+            Already have an account?
+            <a href="/login">Login</a>
+        </p>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Journal History</title>
+    <style>
+        body { background: #fdf6e3; padding: 40px; font-family: 'Poppins', sans-serif; color: #5d4037; }
+        .entry-card { 
+            background: white; 
+            padding: 20px; 
+            margin: 20px auto; 
+            max-width: 600px;
+            border-radius: 12px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-bottom: 4px solid #8bc34a;
+        }
+        .date { font-weight: bold; color: #8bc34a; margin-bottom: 10px; display: block; }
+    </style>
+</head>
+<body>
+    <h1 style="text-align:center;">Your Past Reflections 📖</h1>
+    
+    {% for entry in entries %}
+    <div class="entry-card">
+        <span class="date">{{ entry.date }}</span>
+        <p>{{ entry.text }}</p>
+    </div>
+    {% endfor %}
+
+    <div style="text-align:center;">
+        <a href="/journal">Write More</a> | <a href="/dashboard">Dashboard</a>
+    </div>
+</body>
+</html>
