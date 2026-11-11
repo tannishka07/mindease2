@@ -51,6 +51,9 @@ def register_chat_routes(app, db, openai_client):
         )
         messages.append({"role": "user", "content": message})
 
+        if openai_client is None:
+            return jsonify({"error": "Chatbot is not configured yet. Add OPENAI_API_KEY to your deployment environment."}), 503
+
         try:
             completion = openai_client.chat.completions.create(
                 model=os.environ.get("OPENAI_MODEL", "gpt-4o-mini"),
