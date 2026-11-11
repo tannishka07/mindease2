@@ -22,7 +22,8 @@ app = Flask(__name__)
 
 # OpenAI is initialized server-side; never expose this key in browser code.
 openai_client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY")) if os.environ.get("OPENAI_API_KEY") else None
-register_chat_routes(app, db, openai_client) if openai_client else None
+# Register chat API routes even without a configured key so the browser receives a clear setup error.
+register_chat_routes(app, db, openai_client)
 
 # 🔐 SESSION SECRET KEY
 app.config["SECRET_KEY"] = os.environ.get(
