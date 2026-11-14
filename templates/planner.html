@@ -692,7 +692,9 @@
     }
     function renderSchedule() {
         const list = document.getElementById("scheduleList");
-        const selected = taskCards.filter(card => card.dataset.date === selectedDate);
+        // Tasks without a date remain visible in every selected-day schedule,
+        // so they are not hidden from users who created them before dates were supported.
+        const selected = taskCards.filter(card => !card.dataset.date || card.dataset.date === selectedDate);
         selected.sort((a,b) => (a.dataset.time || "99:99").localeCompare(b.dataset.time || "99:99"));
         const complete = selected.filter(card => card.dataset.completed==="true").length;
         const percent = selected.length ? Math.round(complete/selected.length*100) : 0;
