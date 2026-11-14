@@ -2980,3 +2980,327 @@ body.landing-page {
     }
 }
 
+
+
+/* ==========================================
+   MINDEASE — BUTTER & MIDNIGHT BLUE THEME
+   Palette: #FFF2BA / #0F3C65
+   Shared theme override; layout and imagery retained.
+========================================== */
+:root {
+    --me-butter: #FFF2BA;
+    --me-midnight: #0F3C65;
+    --me-bg: #FFF8D9;
+    --me-surface: #FFFCED;
+    --me-primary: #0F3C65;
+    --me-primary-dark: #092C4A;
+    --me-text: #0F3C65;
+    --me-muted: #62788A;
+    --me-border: rgba(15, 60, 101, .16);
+}
+
+/* General page canvas and typography */
+body {
+    color: var(--me-midnight);
+}
+
+.page-title,
+.dashboard-title,
+.login-title,
+.section-heading h2,
+.mind-topbar h1,
+.mind-brand,
+.mind-feature-card h3,
+.landing-intro h2,
+.landing-section-heading h2,
+.landing-how h2,
+.planner-hero h1 {
+    color: var(--me-midnight);
+}
+
+.page-subtitle,
+.topbar-subtitle,
+.mind-feature-card p,
+.landing-intro-copy,
+.landing-step p {
+    color: var(--me-muted);
+}
+
+/* Primary actions */
+button,
+.btn-green,
+.auth-btn,
+.welcome-button,
+.dashboard-card-ui button,
+button.dash-btn {
+    background: var(--me-midnight);
+    color: var(--me-butter);
+}
+
+button:hover,
+.btn-green:hover,
+.auth-btn:hover,
+.welcome-button:hover,
+.dashboard-card-ui button:hover,
+button.dash-btn:hover {
+    background: #092C4A;
+}
+
+/* Warm butter page sections and light cards */
+.dashboard-section,
+.insights-page-container,
+.features-section,
+.steps-section {
+    background-color: var(--me-butter);
+}
+
+.soft-card,
+.feature-card,
+.dashboard-card-ui,
+.mind-feature-card,
+.insights-card,
+.weekly-moods,
+.login-wrapper,
+.panel,
+.stat-card {
+    background-color: var(--me-surface);
+    border-color: var(--me-border);
+}
+
+/* Dashboard app shell */
+.mind-dashboard {
+    background: #FFFCED;
+}
+
+.mind-sidebar {
+    background: var(--me-midnight);
+    border-right-color: rgba(255, 242, 186, .18);
+}
+
+.mind-brand,
+.mind-sidebar .sidebar-label,
+.mind-sidebar .nav-item,
+.mind-sidebar .logout-link {
+    color: var(--me-butter);
+}
+
+.mind-brand small {
+    color: rgba(255, 242, 186, .72);
+}
+
+.mind-nav .nav-item:hover,
+.mind-nav .nav-item.active {
+    background: rgba(255, 242, 186, .15);
+    color: var(--me-butter);
+}
+
+.brand-icon {
+    background: rgba(255, 242, 186, .16);
+    color: var(--me-butter);
+}
+
+.sidebar-note {
+    background: rgba(255, 242, 186, .13);
+}
+
+.sidebar-note p {
+    color: var(--me-butter);
+}
+
+/* Dashboard panels and cards */
+.welcome-panel {
+    background: linear-gradient(115deg, #FFF2BA, #FFF8D9);
+}
+
+.welcome-tag {
+    background: rgba(255,255,255,.66);
+    color: var(--me-midnight);
+}
+
+.welcome-copy h2,
+.section-heading h2,
+.mind-feature-card h3 {
+    color: var(--me-midnight);
+}
+
+.welcome-copy p,
+.section-heading p,
+.mind-feature-card p {
+    color: #62788A;
+}
+
+.welcome-button {
+    background: var(--me-midnight);
+    color: var(--me-butter);
+}
+
+.mind-feature-card {
+    border-color: var(--me-border);
+    box-shadow: 0 4px 15px rgba(15, 60, 101, .05);
+}
+
+.mind-feature-card:hover {
+    border-color: rgba(15, 60, 101, .34);
+    box-shadow: 0 10px 25px rgba(15, 60, 101, .10);
+}
+
+.feature-action,
+.quote-icon {
+    color: var(--me-midnight);
+}
+
+.mind-quote-panel,
+.quote-card,
+.summary-box,
+.stat-item {
+    background: #FFF2BA;
+    border-color: rgba(15, 60, 101, .14);
+    color: var(--me-midnight);
+}
+
+.mind-quote-panel blockquote,
+.quote-card blockquote {
+    color: var(--me-midnight);
+}
+
+.mind-quote-panel .quote-refresh,
+.quote-card .quote-refresh {
+    background: var(--me-midnight);
+    color: var(--me-butter);
+}
+
+/* Planner styling: preserve structure, recolor existing green elements */
+.planner-hero {
+    background: linear-gradient(120deg, #FFF2BA, #FFF8D9);
+}
+
+.eyebrow,
+.brand,
+.back-link {
+    color: var(--me-midnight);
+}
+
+.back-link,
+.filter-select {
+    border-color: var(--me-border);
+    color: var(--me-midnight);
+}
+
+.primary-btn {
+    background: var(--me-midnight);
+    color: var(--me-butter);
+}
+
+.primary-btn:hover {
+    background: #092C4A;
+}
+
+.gentle-note,
+.tag {
+    background: #F8F0CC;
+    color: var(--me-midnight);
+}
+
+.task-main input[type="checkbox"] {
+    accent-color: var(--me-midnight);
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, #0F3C65, #557B9B);
+}
+
+.day-chip.active {
+    background: var(--me-midnight);
+    border-color: var(--me-midnight);
+    color: var(--me-butter);
+}
+
+.day-chip.today:not(.active) {
+    background: #FFF2BA;
+    border-color: rgba(15, 60, 101, .24);
+}
+
+/* Landing page hero and calls to action */
+.landing-hero {
+    background-image:
+        linear-gradient(90deg,
+            rgba(15, 60, 101, .82) 0%,
+            rgba(15, 60, 101, .48) 55%,
+            rgba(15, 60, 101, .18) 100%),
+        url("/static/images/background.png");
+}
+
+.landing-hero h1 span {
+    color: var(--me-butter);
+}
+
+.landing-eyebrow {
+    border-color: rgba(255, 242, 186, .42);
+    background: rgba(15, 60, 101, .22);
+}
+
+.landing-primary-btn {
+    background: var(--me-butter);
+    color: var(--me-midnight);
+}
+
+.landing-cta {
+    background: linear-gradient(120deg, #FFF2BA, #FFF8D9);
+}
+
+.landing-cta h2,
+.landing-cta h2 span {
+    color: var(--me-midnight);
+}
+
+.landing-cta .landing-primary-btn {
+    background: var(--me-midnight);
+    color: var(--me-butter);
+}
+
+.landing-footer .landing-logo {
+    color: var(--me-midnight);
+}
+
+/* Forms, focus states, and tables */
+input,
+textarea,
+select {
+    border-color: rgba(15, 60, 101, .20);
+    color: var(--me-midnight);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline-color: #557B9B;
+}
+
+.insights-table th {
+    background: #FFF8D9;
+    color: var(--me-midnight);
+}
+
+.insights-table td {
+    color: #62788A;
+}
+
+.footer-section {
+    background: var(--me-midnight);
+}
+
+/* Existing feature icon blocks use restrained butter/blue tints */
+.icon-green,
+.icon-yellow,
+.icon-purple,
+.icon-pink,
+.mood-feature .feature-icon,
+.journal-feature .feature-icon,
+.insights-feature .feature-icon,
+.planner-feature .feature-icon,
+.session-feature .feature-icon,
+.breathing-feature .feature-icon,
+.game-feature .feature-icon,
+.music-feature .feature-icon {
+    background: #F8F0CC;
+}
