@@ -541,7 +541,16 @@
         </section>
 
         <section class="panel">
-
+          <div class="task-heading">
+                <h2>My study tasks</h2>
+                <select id="taskFilter" class="filter-select"
+                        aria-label="Filter study tasks">
+                    <option value="all">All tasks</option>
+                    <option value="pending">In progress</option>
+                    <option value="completed">Completed</option>
+                    <option value="overdue">Overdue</option>
+                </select>
+            </div>
             {% if tasks %}
                 <div class="task-list" id="taskList">
                     {% for task in tasks %}
