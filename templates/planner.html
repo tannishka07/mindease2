@@ -112,6 +112,37 @@
             color: var(--muted);
         }
 
+        .week-panel { margin-bottom: 22px; }
+        .week-heading, .schedule-heading { display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap; }
+        .week-heading h2, .schedule-heading h2 { margin:0; }
+        .week-caption { color:var(--muted); font-size:13px; margin:5px 0 16px; }
+        .week-strip { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:9px; }
+        .day-chip { border:1px solid var(--line); border-radius:15px; background:#fbfcf9; padding:13px 8px; color:var(--ink); cursor:pointer; text-align:center; font:inherit; transition:.18s ease; }
+        .day-chip:hover { border-color:#b8d2c1; transform:translateY(-2px); }
+        .day-chip.active { background:var(--green); border-color:var(--green); color:white; box-shadow:0 7px 16px rgba(49,94,77,.16); }
+        .day-chip.today:not(.active) { background:var(--mint); border-color:#cfe0d3; }
+        .day-name { display:block; font-size:11px; opacity:.8; text-transform:uppercase; letter-spacing:.5px; }
+        .day-number { display:block; font-size:21px; font-weight:700; margin:6px 0 3px; }
+        .day-count { display:block; font-size:10px; opacity:.8; }
+        .schedule-panel { margin-bottom:22px; }
+        .schedule-heading { margin-bottom:16px; }
+        .schedule-subtitle { color:var(--muted); font-size:13px; margin:5px 0 0; }
+        .daily-progress { min-width:180px; }
+        .daily-progress-top { display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-bottom:7px; }
+        .progress-track { height:8px; background:#edf2ed; border-radius:99px; overflow:hidden; }
+        .progress-fill { height:100%; background:linear-gradient(90deg,#477b67,#8fb49b); border-radius:99px; transition:width .25s ease; }
+        .schedule-list { display:grid; gap:11px; }
+        .schedule-item { display:grid; grid-template-columns:82px 5px minmax(0,1fr); gap:13px; align-items:stretch; }
+        .schedule-time { color:var(--muted); font-size:12px; padding-top:15px; text-align:right; }
+        .schedule-rail { background:#dce9df; border-radius:99px; }
+        .schedule-card { background:#f7faf7; border:1px solid #e6eee7; border-radius:14px; padding:13px 15px; display:flex; justify-content:space-between; gap:12px; align-items:center; }
+        .schedule-card.done { opacity:.65; }
+        .schedule-card.done .schedule-title { text-decoration:line-through; color:var(--muted); }
+        .schedule-title { margin:0 0 5px; font-size:14px; }
+        .schedule-detail { margin:0; color:var(--muted); font-size:11px; }
+        .schedule-status { color:var(--green-dark); font-size:11px; white-space:nowrap; }
+        .schedule-empty { padding:24px; text-align:center; background:#f8faf6; border:1px dashed #d5e1d5; border-radius:15px; color:var(--muted); font-size:13px; }
+        .schedule-empty strong { display:block; color:var(--green-dark); font-size:15px; margin-bottom:5px; }
         .planner-layout {
             display: grid;
             grid-template-columns: 340px minmax(0, 1fr);
@@ -354,6 +385,13 @@
             }
         }
 
+        @media (max-width: 640px) {
+            .week-strip { grid-template-columns:repeat(4,minmax(0,1fr)); }
+            .schedule-item { grid-template-columns:60px 4px minmax(0,1fr); gap:9px; }
+            .schedule-card { padding:11px; }
+            .daily-progress { width:100%; }
+        }
+
         @media (max-width: 480px) {
             body {
                 padding: 18px 12px;
@@ -409,6 +447,33 @@
         </div>
     </section>
 
+    <section class="panel week-panel">
+        <div class="week-heading">
+            <div>
+                <h2>Your week at a glance</h2>
+                <p class="week-caption" id="weekCaption">Choose a day to see your planned study tasks.</p>
+            </div>
+            <button type="button" class="back-link" id="showAllDays">Show all tasks</button>
+        </div>
+        <div class="week-strip" id="weekStrip" aria-label="Choose a day"></div>
+    </section>
+
+    <section class="panel schedule-panel" aria-label="Selected day schedule">
+        <div class="schedule-heading">
+            <div>
+                <h2 id="scheduleTitle">Today's study schedule</h2>
+                <p class="schedule-subtitle" id="scheduleSubtitle">A little structure, with room to breathe.</p>
+            </div>
+            <div class="daily-progress">
+                <div class="daily-progress-top"><span>Daily progress</span><strong id="dailyProgressLabel">0%</strong></div>
+                <div class="progress-track"><div class="progress-fill" id="dailyProgressFill" style="width:0%"></div></div>
+            </div>
+        </div>
+        <div class="schedule-list" id="scheduleList">
+            <div class="schedule-empty"><strong>Loading your plan…</strong>Your saved tasks will appear here.</div>
+        </div>
+    </section>
+
     <main class="planner-layout">
 
         <section class="panel">
@@ -443,8 +508,13 @@
                 </div>
 
                 <div class="field">
-                    <label for="due_date">Due date</label>
+                    <label for="due_date">Study date / due date</label>
                     <input id="due_date" name="due_date" type="date">
+                </div>
+
+                <div class="field">
+                    <label for="study_time">Start time (optional)</label>
+                    <input id="study_time" name="study_time" type="time">
                 </div>
 
                 <div class="field">
@@ -495,7 +565,12 @@
                                 {% if task.completed %}is-complete{% endif %}
                                 {% if not task.completed and task.due_date and task.due_date < today %}is-overdue{% endif %}"
                             data-completed="{{ 'true' if task.completed else 'false' }}"
-                            data-overdue="{{ 'true' if not task.completed and task.due_date and task.due_date < today else 'false' }}">
+                            data-overdue="{{ 'true' if not task.completed and task.due_date and task.due_date < today else 'false' }}"
+                            data-date="{{ task.due_date or '' }}"
+                            data-time="{{ task.get('study_time', '') }}"
+                            data-title="{{ task.title|e }}"
+                            data-subject="{{ task.subject|e }}"
+                            data-type="{{ task.task_type|title }}">
 
                             <div class="task-main">
                                 <form action="{{ url_for('planner_toggle', task_id=task._id) }}"
@@ -536,6 +611,7 @@
                                                 📅 Due ·
                                             {% endif %}
                                             {{ task.due_date }}
+                                            {% if task.get('study_time') %} · {{ task.get('study_time') }}{% endif %}
                                         </div>
                                     {% else %}
                                         <div class="task-due">No due date set</div>
@@ -581,34 +657,105 @@
     const filter = document.getElementById("taskFilter");
     const taskCards = Array.from(document.querySelectorAll(".task-card"));
     const emptyMessage = document.getElementById("noFilteredTasks");
+    const todayKey = new Date().toLocaleDateString("en-CA");
+    let selectedDate = todayKey;
 
+    function formatDate(date) {
+        return date.toLocaleDateString(undefined, { weekday:"short", month:"short", day:"numeric" });
+    }
+    function dateKey(date) {
+        const y = date.getFullYear();
+        const m = String(date.getMonth()+1).padStart(2,"0");
+        const d = String(date.getDate()).padStart(2,"0");
+        return `${y}-${m}-${d}`;
+    }
+    function renderWeek() {
+        const strip = document.getElementById("weekStrip");
+        strip.innerHTML = "";
+        const today = new Date();
+        const dayStart = new Date(today);
+        dayStart.setDate(today.getDate() - ((today.getDay()+6)%7));
+        for (let i=0;i<7;i++) {
+            const day = new Date(dayStart);
+            day.setDate(dayStart.getDate()+i);
+            const key = dateKey(day);
+            const count = taskCards.filter(card => card.dataset.date === key).length;
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "day-chip" + (key===selectedDate ? " active" : "") + (key===todayKey ? " today" : "");
+            button.innerHTML = `<span class="day-name">${day.toLocaleDateString(undefined,{weekday:"short"})}</span><span class="day-number">${day.getDate()}</span><span class="day-count">${count} ${count===1?"task":"tasks"}</span>`;
+            button.setAttribute("aria-pressed", key===selectedDate ? "true":"false");
+            button.addEventListener("click",()=>{ selectedDate=key; renderWeek(); renderSchedule(); });
+            strip.appendChild(button);
+        }
+        document.getElementById("weekCaption").textContent = `Week of ${formatDate(dayStart)} · Select a day to view its plan.`;
+    }
+    function renderSchedule() {
+        const list = document.getElementById("scheduleList");
+        const selected = taskCards.filter(card => card.dataset.date === selectedDate);
+        selected.sort((a,b) => (a.dataset.time || "99:99").localeCompare(b.dataset.time || "99:99"));
+        const complete = selected.filter(card => card.dataset.completed==="true").length;
+        const percent = selected.length ? Math.round(complete/selected.length*100) : 0;
+        document.getElementById("dailyProgressLabel").textContent = percent + "%";
+        document.getElementById("dailyProgressFill").style.width = percent + "%";
+        const selectedDateObj = new Date(selectedDate + "T12:00:00");
+        const label = selectedDate === todayKey ? "Today's" : selectedDateObj.toLocaleDateString(undefined,{weekday:"long"});
+        document.getElementById("scheduleTitle").textContent = label + " study schedule";
+        document.getElementById("scheduleSubtitle").textContent = selected.length ? `${complete} of ${selected.length} tasks completed` : "A little structure, with room to breathe.";
+        if (!selected.length) {
+            list.innerHTML = '<div class="schedule-empty"><strong>No tasks planned for this day</strong>Add a task with this date and it will show up here.</div>';
+            return;
+        }
+        list.innerHTML = "";
+        selected.forEach(card => {
+            const item = document.createElement("div");
+            item.className = "schedule-item";
+            const time = document.createElement("div");
+            time.className = "schedule-time";
+            time.textContent = card.dataset.time ? new Date("2000-01-01T"+card.dataset.time).toLocaleTimeString([], {hour:"numeric",minute:"2-digit"}) : "Anytime";
+            const rail = document.createElement("div");
+            rail.className = "schedule-rail";
+            const body = document.createElement("div");
+            body.className = "schedule-card" + (card.dataset.completed==="true" ? " done":"");
+            const copy = document.createElement("div");
+            const title = document.createElement("h3");
+            title.className = "schedule-title";
+            title.textContent = card.dataset.title;
+            const detail = document.createElement("p");
+            detail.className = "schedule-detail";
+            detail.textContent = [card.dataset.subject,card.dataset.type].filter(Boolean).join(" · ") || "Study task";
+            copy.append(title,detail);
+            const status = document.createElement("span");
+            status.className = "schedule-status";
+            status.textContent = card.dataset.completed==="true" ? "✓ Done" : "○ Planned";
+            body.append(copy,status);
+            item.append(time,rail,body);
+            list.appendChild(item);
+        });
+    }
     filter.addEventListener("change", function () {
         let visibleCount = 0;
-
         taskCards.forEach(card => {
             const completed = card.dataset.completed === "true";
             const overdue = card.dataset.overdue === "true";
-
             let visible = true;
-
             if (filter.value === "pending") visible = !completed;
             if (filter.value === "completed") visible = completed;
             if (filter.value === "overdue") visible = overdue;
-
             card.style.display = visible ? "" : "none";
             if (visible) visibleCount++;
         });
-
-        if (emptyMessage) {
-            emptyMessage.style.display =
-                taskCards.length > 0 && visibleCount === 0 ? "block" : "none";
-        }
+        if (emptyMessage) emptyMessage.style.display = taskCards.length > 0 && visibleCount === 0 ? "block" : "none";
     });
-
-    // Prevent selecting a due date earlier than today in the normal UI.
-    // The backend still accepts older dates for existing or imported tasks.
-    document.getElementById("due_date").min =
-        new Date().toLocaleDateString("en-CA");
+    document.getElementById("showAllDays").addEventListener("click",()=>{
+        selectedDate = todayKey;
+        renderWeek();
+        renderSchedule();
+    });
+    const dateInput = document.getElementById("due_date");
+    dateInput.min = todayKey;
+    renderWeek();
+    renderSchedule();
 </script>
 </body>
 </html>
