@@ -392,6 +392,7 @@ def planner_add():
     title = request.form.get("title", "").strip()
     subject = request.form.get("subject", "").strip()
     due_date = request.form.get("due_date", "").strip()
+    study_time = request.form.get("study_time", "").strip()
     priority = request.form.get("priority", "medium").lower()
     task_type = request.form.get("task_type", "assignment").lower()
     minutes_raw = request.form.get("estimated_minutes", "30").strip()
@@ -423,6 +424,7 @@ def planner_add():
         "title": title,
         "subject": subject,
         "due_date": due_date,
+        "study_time": study_time,
         "priority": priority,
         "task_type": task_type,
         "estimated_minutes": estimated_minutes,
