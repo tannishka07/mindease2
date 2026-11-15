@@ -48,9 +48,21 @@ div[data-testid="stForm"] {{ background:white; border:1px solid {LINE}; padding:
 
 @st.cache_resource
 def get_db():
-    uri = os.environ.get("MONGO_URI", "").strip()
+    # Streamlit Cloud stores app secrets in st.secrets; local development
+    # can continue using the MONGO_URI variable from .env.
+    uri = ""
+    try:
+        uri = str(st.secrets.get("MONGO_URI", "")).strip()
+    except Exception:
+        # st.secrets may be unavailable when running outside Streamlit Cloud.
+        pass
+
+    if not uri:
+        uri = os.environ.get("MONGO_URI", "").strip()
+
     if not uri:
         return None
+
     client = MongoClient(uri, serverSelectionTimeoutMS=7000)
     client.admin.command("ping")
     return client["mindease"]
